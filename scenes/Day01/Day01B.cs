@@ -8,10 +8,8 @@ namespace Day01;
 public class Day01B {
 
    public void ComputeDay01B(string directory) { 
-        string filePath = Path.Combine(directory, "scenes\\Day01\\day01btest.txt");
+        string filePath = Path.Combine(directory, "scenes\\Day01\\day01b.txt");
         List<string> results = utils.FileReader.ToStringList(filePath);
-        int total = 0;
-
         List<int> columnA = new List<int>();
         List<int> columnB = new List<int>();
 
@@ -24,11 +22,18 @@ public class Day01B {
         columnA.Sort();
         columnB.Sort();
 
+        int count = 0;
+        int runningTotal = 0;
         for(int i = 0; i < columnA.Count; i++){
-            total += Math.Abs(columnA[i] - columnB[i]);
+            for(int j = 0; j < columnB.Count; j++){
+                if(columnA[i] == columnB[j]) {
+                    count++;
+                }
+            }
+            runningTotal += columnA[i] * count;
+            count = 0;
         }
 
-        GD.Print("Grand total part 1: " + total);
-
+        GD.Print("Grand total part 1: " + runningTotal);
     }   
 }
