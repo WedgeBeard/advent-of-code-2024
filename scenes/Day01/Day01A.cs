@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Godot;
@@ -12,23 +13,22 @@ public class Day01A {
         List<string> results = utils.FileReader.ToStringList(filePath);
         int total = 0;
 
+        List<int> columnA = new List<int>();
+        List<int> columnB = new List<int>();
+
         foreach (string value in results) {
-            string numbers = string.Empty;
-
-            foreach (char item in value) {
-                if (char.IsDigit(item)) {
-                    numbers += item;
-                }
-            }
-
-            if(numbers.Length != 0) {
-                string num = string.Empty;
-                num += numbers[0];
-                num += numbers[numbers.Length-1];
-                int combined = int.Parse(num);
-                total += (combined);
-            }
+            string[] pair = value.Split("   ");
+            columnA.Add(int.Parse(pair[0]));
+            columnB.Add(int.Parse(pair[1]));
         }
+
+        columnA.Sort();
+        columnB.Sort();
+
+        for(int i = 0; i < columnA.Count; i++){
+            total += Math.Abs(columnA[i] - columnB[i]);
+        }
+
         GD.Print("Grand total part 1: " + total);
     }
 }
