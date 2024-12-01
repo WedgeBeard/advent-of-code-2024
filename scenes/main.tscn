@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://g7akmldsmub0"]
+
+[ext_resource type="Script" path="res://scenes/Main.cs" id="1_w52mu"]
+
+[node name="Main" type="Node2D" node_paths=PackedStringArray("button_day_01_a", "button_day_01_b")]
+script = ExtResource("1_w52mu")
+button_day_01_a = NodePath("Day01A")
+button_day_01_b = NodePath("Day01B")
+
+[node name="Day01A" type="Button" parent="."]
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 120.0
+offset_bottom = 51.0
+text = "Day 01 A"
+
+[node name="Day01B" type="Button" parent="."]
+offset_left = 140.0
+offset_top = 20.0
+offset_right = 240.0
+offset_bottom = 51.0
+text = "Day 01 B"
