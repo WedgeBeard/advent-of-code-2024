@@ -8,7 +8,7 @@ namespace Day02;
 public class Day02A {
 
     public void ComputeDay02A(string directory) {
-        string filePath = Path.Combine(directory, "scenes\\Day02\\day02atest.txt");
+        string filePath = Path.Combine(directory, "scenes\\Day02\\day02a.txt");
         List<string> results = utils.FileReader.ToStringList(filePath);
         int safeTotal = 0;
 
@@ -27,7 +27,7 @@ public class Day02A {
                     break;
                 }
             }
-            if(Math.Abs(safeCount) == sequenceLength) {
+            if(Math.Abs(safeCount) == sequenceLength-1) {
                 safeTotal++;
             }
         }
