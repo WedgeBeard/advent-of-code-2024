@@ -34,6 +34,6 @@ public class Day01B {
             count = 0;
         }
 
-        GD.Print("Grand total part 1: " + runningTotal);
+        GD.Print("Grand total Day 1 part 2: " + runningTotal);
     }   
 }

@@ -29,6 +29,6 @@ public class Day01A {
             total += Math.Abs(columnA[i] - columnB[i]);
         }
 
-        GD.Print("Grand total part 1: " + total);
+        GD.Print("Grand total Day 1 part 1: " + total);
     }
 }
