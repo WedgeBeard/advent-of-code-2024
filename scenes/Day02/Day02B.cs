@@ -13,9 +13,41 @@ public class Day02B {
         int safeTotal = 0;
 
         foreach(string line in results) {
-            int safeCount = 0;
-            int exception = 0;
             string[] sequence = line.Split(' ');
+            if (CheckSafety(sequence)) { 
+                safeTotal++;
+            }
+            else {
+                bool anySafe = false;
+                for (int i = 0; i < sequence.Length - 1; i++) {
+                    string[] testSequence = RemoveElement(sequence, i);
+                    if(CheckSafety(testSequence)) { anySafe = true; }
+                }
+                if(anySafe) { safeTotal++; }
+            }
+        }
+
+        GD.Print("Grand total Day 2 part 2: " + safeTotal);
+    }
+
+    private string[] RemoveElement(string[] str, int index)
+    {
+        int newIndex = 0;
+        string[] newSequence = new string[str.Length - 1];
+        for (int i = 0; i < str.Length; i++) {
+            if (i != index) {
+                newSequence[newIndex] = str[i];
+                newIndex++;
+            }
+        }
+
+        return newSequence;
+    }
+
+
+    private bool CheckSafety(string[] sequence) {
+        bool safe = false;
+         int safeCount = 0;
             int sequenceLength = sequence.Length;
             for(int i = 0; i < sequenceLength - 1; i++) {
                 int curr = int.Parse(sequence[i]);
@@ -25,16 +57,13 @@ public class Day02B {
                 } else if (curr > next && curr - next >= 1 && curr - next <= 3) {
                     safeCount--;
                 } else {
-                    exception++;
+                    break;
                 }
             }
-            if(Math.Abs(safeCount) == sequenceLength-1 ||
-                ((Math.Abs(safeCount) == sequenceLength-2) && exception == 1)) {
-                safeTotal++;
+            if(Math.Abs(safeCount) == sequenceLength-1) {
+                safe = true;
             }
-            exception = 0;
-        }
 
-        GD.Print("Grand total Day 2 part 2: " + safeTotal);
+        return safe;
     }
 }
