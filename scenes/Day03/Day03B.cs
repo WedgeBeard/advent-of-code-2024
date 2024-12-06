@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Xml.Schema;
 using Godot;
 
 namespace Day03;
@@ -12,69 +13,57 @@ public class Day03B {
         string filePath = Path.Combine(directory, "scenes\\Day03\\day03a.txt");
         List<string> fileStrings = utils.FileReader.ToStringList(filePath);
         
-        List<string> doStrings = GetDoStrings(fileStrings);
-        int total = AccumulateTotals(doStrings);
-
-        GD.Print("Grand total Day 3 part 2: " + total);
+        int total = SumMuls(fileStrings);
+        GD.Print("Grand total Day 3 part 2 (updated): " + total);
     }
 
-    private List<string> GetDoStrings(List<string> fileStrings)
+    private int SumMuls(List<string> fileStrings)
     {
-        List<string> doStrings = new List<string>();
-        string doString = "do()";
-        string dontString = "don't()";
-        foreach (string line in fileStrings) {
-            string command = line;
-            int indexHead = 0;
-            while (command.Length > 0) {
-                int indexTail = command.IndexOf(dontString);
-                if (indexTail > 0) {
-                    doStrings.Add(command.Substr(indexHead, indexTail));
-                    command = command.Substr(indexTail + 7, command.Length - 1);
-                } else {
-                    doStrings.Add(command);
-                    command = "";
-                }
+        int total = 0;
+        string command = "";
 
-                indexTail = command.IndexOf(doString);
-                if (indexTail > 0) {
-                    command = command.Substr(indexTail + 4, command.Length - 1);
-                } else {
-                    command = "";
-                }
-            }
-
-            foreach(string item in doStrings) {
-                GD.Print($"do strings: {item}");
-            }
-            // doStrings.Clear();
-            // GD.Print("===========================================");
-        }
-        return doStrings;
-    }
-
-    private static int AccumulateTotals(List<string> results)
-    {
-        string mulpattern = @"mul\(\d{1,3},\d{1,3}\)";
-        Regex mulRegex = new Regex(mulpattern);
-
+        string doPattern = @"do\(\)";
+        Regex doRegex = new Regex(doPattern);
+        string dontPattern = @"don't\(\)";
+        Regex dontRegex = new Regex(dontPattern);
+        string mulPattern = @"mul\(\d{1,3},\d{1,3}\)";
+        Regex mulRegex = new Regex(mulPattern);
         string numPattern = @"\d{1,3}";
         Regex numRegex = new Regex(numPattern);
 
-        int total = 0;
+        bool enabled = true;
 
-        foreach (string value in results)
-        {
-            MatchCollection mulMatches = mulRegex.Matches(value);
-            foreach (Match mulMatch in mulMatches)
-            {
-                MatchCollection numMatches = numRegex.Matches(mulMatch.Value);
-                total += int.Parse(numMatches[0].Value) * int.Parse(numMatches[1].Value);
+        foreach (string line in fileStrings) {
+            command = line;
+            Dictionary<int, string> allMatches = new Dictionary<int, string>();
+
+            MatchCollection mulMatches = mulRegex.Matches(line);
+            MatchCollection doMatches = doRegex.Matches(line);
+            MatchCollection dontMatches = dontRegex.Matches(line);
+
+            foreach(Match match in mulMatches) { allMatches.Add(match.Index, match.Value); }
+            foreach(Match match in doMatches) { allMatches.Add(match.Index, match.Value); }
+            foreach(Match match in dontMatches) { allMatches.Add(match.Index, match.Value); }
+
+            SortedDictionary<int, string> sortedMatches = new SortedDictionary<int, string>(allMatches);
+
+            foreach (var kvp in sortedMatches) {
+                if (kvp.Value == "do()") {
+                    enabled = true;
+                }
+                else if (kvp.Value == "don't()") { 
+                    enabled = false; 
+                }
+                else 
+                    if(enabled) {
+                        MatchCollection numMatches = numRegex.Matches(kvp.Value);
+                        int val1 = int.Parse(numMatches[0].Value);
+                        int val2 = int.Parse(numMatches[1].Value);
+                        total += val1 * val2;
+                    } else { // do nothing } 
+                }
             }
         }
-
         return total;
     }
-// try 1: too high, 61636489
-// try 2: too low,  48459518
 }

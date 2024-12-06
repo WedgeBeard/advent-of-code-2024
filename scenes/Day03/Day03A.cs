@@ -10,7 +10,7 @@ namespace Day03;
 public class Day03A {
     public void ComputeDay03A(string directory)
     {
-        string filePath = Path.Combine(directory, "scenes\\Day03\\day03a.txt");
+        string filePath = Path.Combine(directory, "scenes\\Day03\\day03b.txt");
         List<string> fileStrings = utils.FileReader.ToStringList(filePath);
         
         int total = AccumulateTotals(fileStrings);
