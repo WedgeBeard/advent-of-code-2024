@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/Main.cs" id="1_w52mu"]
 
-[node name="Main" type="Node2D" node_paths=PackedStringArray("button_day_01_a", "button_day_01_b", "button_day_02_a", "button_day_02_b", "button_day_03_a", "button_day_03_b")]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("button_day_01_a", "button_day_01_b", "button_day_02_a", "button_day_02_b", "button_day_03_a", "button_day_03_b", "button_day_04_a", "button_day_04_b")]
 script = ExtResource("1_w52mu")
 button_day_01_a = NodePath("Day01A")
 button_day_01_b = NodePath("Day01B")
@@ -10,6 +10,8 @@ button_day_02_a = NodePath("Day02A")
 button_day_02_b = NodePath("Day02B")
 button_day_03_a = NodePath("Day03A")
 button_day_03_b = NodePath("Day03B")
+button_day_04_a = NodePath("Day04A")
+button_day_04_b = NodePath("Day04B")
 
 [node name="Day01A" type="Button" parent="."]
 offset_left = 20.0
@@ -52,3 +54,17 @@ offset_top = 114.0
 offset_right = 241.0
 offset_bottom = 145.0
 text = "Day 03 B"
+
+[node name="Day04A" type="Button" parent="."]
+offset_left = 19.0
+offset_top = 162.0
+offset_right = 119.0
+offset_bottom = 193.0
+text = "Day 04 A"
+
+[node name="Day04B" type="Button" parent="."]
+offset_left = 141.0
+offset_top = 162.0
+offset_right = 241.0
+offset_bottom = 193.0
+text = "Day 04 B"

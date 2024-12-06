@@ -1,6 +1,7 @@
 using Day01;
 using Day02;
 using Day03;
+using Day04;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,10 @@ public partial class Main : Node2D
 	private Button button_day_03_a;
 	[Export]
 	private Button button_day_03_b;
+	[Export]
+	private Button button_day_04_a;
+	[Export]
+	private Button button_day_04_b;
 
 	private string directory = Directory.GetCurrentDirectory();
 
@@ -32,6 +37,8 @@ public partial class Main : Node2D
 		button_day_02_b.Pressed += RunDay02B;
 		button_day_03_a.Pressed += RunDay03A;
 		button_day_03_b.Pressed += RunDay03B;
+		button_day_04_a.Pressed += RunDay04A;
+		button_day_04_b.Pressed += RunDay04B;
 	}
 
 	public override void _Process(double delta)
@@ -67,4 +74,15 @@ public partial class Main : Node2D
 		Day03B day03b = new Day03B();
 		day03b.ComputeDay03B(directory);
 	}
+
+	private void RunDay04A() {
+		Day04A day04a = new Day04A();
+		day04a.ComputeDay04A(directory);
+	}
+
+	private void RunDay04B() {
+		Day04B day04b = new Day04B();
+		day04b.ComputeDay04B(directory);
+	}
+
 }
