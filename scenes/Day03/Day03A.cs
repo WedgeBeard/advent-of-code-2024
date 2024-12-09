@@ -12,7 +12,7 @@ public class Day03A {
     {
         string filePath = Path.Combine(directory, "scenes\\Day03\\day03b.txt");
         List<string> fileStrings = utils.FileReader.ToStringList(filePath);
-        
+
         int total = AccumulateTotals(fileStrings);
 
         GD.Print("Grand total Day 3 part 1: " + total);
@@ -37,8 +37,6 @@ public class Day03A {
                 total += int.Parse(numMatches[0].Value) * int.Parse(numMatches[1].Value);
             }
         }
-
         return total;
     }
-
 }
