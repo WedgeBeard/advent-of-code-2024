@@ -16,11 +16,12 @@ public class Day05B
 
 		foreach(List<int> pagesList in pages) {
 			List<int> currPagesList = pagesList;
-			if(!PageOrderCorrect(currPagesList, rules)) {
-				while (!PageOrderCorrect(currPagesList, rules)) {
-					SwapOutOfOrderPages(ref currPagesList, rules);
-				}
+			bool swapped = false;
+			while (!PageOrderCorrect(currPagesList, rules)) {
+				SwapOutOfOrderPages(ref currPagesList, rules);
+				swapped = true;
 			}
+			if (swapped) { total += currPagesList[currPagesList.Count/2]; }
 		}
 
 		GD.Print($"Day 05 part 2: {total}");
@@ -28,19 +29,21 @@ public class Day05B
 
     private void SwapOutOfOrderPages(ref List<int> listOfPages, List<Vector2I> rules)
     {
-         for (int pageIndex = 0; pageIndex < listOfPages.Count; pageIndex++)
+        for (int pageIndex = 0; pageIndex < listOfPages.Count; pageIndex++)
         {
             int page = listOfPages[pageIndex];
 			foreach (Vector2I rule in rules) {
 				int beforeIndex = ComesBefore(listOfPages, pageIndex, rule[1]);
 				int afterIndex = ComesAfter(listOfPages, pageIndex, rule[0]);
 				if (page == rule[0] && beforeIndex >= 0) {
-					int temp = rule[0];
-					// i need the index of where we start
-					//swap pages
+					int temp = listOfPages[pageIndex];
+					listOfPages[pageIndex] = rule[1];
+					listOfPages[beforeIndex] = temp;
 				} else if (page == rule[1] && afterIndex >= 0) {
-					// swap pages
-				} 
+					int temp = listOfPages[pageIndex];
+					listOfPages[pageIndex] = rule[0];
+					listOfPages[afterIndex] = temp;
+				}
 			}
         }
     }
