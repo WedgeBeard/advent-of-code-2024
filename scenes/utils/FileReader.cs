@@ -16,6 +16,15 @@ public static class FileReader {
         return results;
     }
 
+    public static char[,] To2dCharArray(string filePath) {
+        StreamReader reader = new StreamReader(filePath);
+        string line;
+        while ((line = reader.ReadLine()) != null) {
+        
+        }
+        
+    }
+
     public static void GetRulesAndPages(string filePath, ref List<Vector2I> rules, ref List<List<int>> pages) {
         bool switcher = false;
         StreamReader reader = new StreamReader(filePath);
