@@ -9,40 +9,57 @@ namespace Day05;
 public class Day05A
 {
 	public void ComputeDay05A(string directory) {
-		string filePath = Path.Combine(directory, "scenes\\Day05\\day05atest.txt");
+		string filePath = Path.Combine(directory, "scenes\\Day05\\day05a.txt");
 		List<Vector2I> rules = new List<Vector2I>();
 		List<List<int>> pages = new List<List<int>>();
         utils.FileReader.GetRulesAndPages(filePath, ref rules, ref pages);
-		
-		GD.Print("RULES:");
-		foreach(Vector2I rule in rules) {
-			GD.Print(rule);
-		}
+		int total = 0;
 
-		GD.Print("PAGES:");
 		foreach(List<int> pagesList in pages) {
-			
-			GD.Print("NEW GROUP");
 			if(PageOrderCorrect(pagesList, rules)) {
-				// get middle page, add it to total
+				total += pagesList[pagesList.Count/2];
 			}
 		}
 
-		GD.Print($"Day 05 part 1: ");
+		GD.Print($"Day 05 part 1: {total}");
 	}
 
-    private bool PageOrderCorrect(List<int> pagesList, List<Vector2I> rules)
+    private bool PageOrderCorrect(List<int> listOfPages, List<Vector2I> rules)
     {
-        bool ordered = false;
+        bool ordered = true;
 
-        for (int i = 0; i < pagesList.Count; i++)
+        for (int pageIndex = 0; pageIndex < listOfPages.Count; pageIndex++)
         {
-            int page = pagesList[i];
-            // find matching rules for it
-            	// for each rule 
-
+            int page = listOfPages[pageIndex];
+			foreach (Vector2I rule in rules) {
+				if (page == rule[0] && ComesBefore(listOfPages, pageIndex, rule[1])) {
+					return false;
+				} else if (page == rule[1] && ComesAfter(listOfPages, pageIndex, rule[0])) {
+					return false;
+				} 
+			}
         }
-
 		return ordered;
     }
+
+    private bool ComesAfter(List<int> listOfPages, int pageIndex, int laterPage)
+    {
+    	int page = listOfPages[pageIndex];
+		for (int i = pageIndex +1; i < listOfPages.Count; i++) {
+			if (listOfPages[i] == laterPage) {
+				return true;
+			}
+	   	}
+	   return false;
+    }
+
+	private  bool ComesBefore(List<int> listOfPages, int pageIndex, int earlierPage) {
+		int page = listOfPages[pageIndex];
+		for (int i = pageIndex -1; i >= 0; i--) {
+			if (listOfPages[i] == earlierPage) {
+				return true;
+			}
+	   	}
+		return false;
+	}
 }
