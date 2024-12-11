@@ -43,6 +43,10 @@ public class Day06B
 			}
 			else if (grid[nextPos.row,nextPos.col] == '#') {
 				dirIndex = (dirIndex > direction.Count - 2) ? 0 : dirIndex + 1;
+				// when you hit a wall and change direction, record that wall
+				// position and where it was hit from. if it happens again, you
+				// are repeating the loop
+				
 				// GD.Print($"TURN @ {currPos.row}, {currPos.col}");
 			}
 			else if (grid[nextPos.row,nextPos.col] == '.' || 
@@ -56,7 +60,7 @@ public class Day06B
 		}
 		
 		if (traversed.ContainsKey(startPos)) { traversed.Remove(startPos); }
-		
+
 		// print grid
 		string finishedGrid = "";
 		for (int i = 0; i < maxRows; i++) {
