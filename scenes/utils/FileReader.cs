@@ -16,13 +16,21 @@ public static class FileReader {
         return results;
     }
 
-    public static char[,] To2dCharArray(string filePath) {
-        StreamReader reader = new StreamReader(filePath);
-        string line;
-        while ((line = reader.ReadLine()) != null) {
-        
+    public static char[,] To2dCharArray(string filePath, ref int rowCount, ref int colCount) {
+        string[] lines = File.ReadAllLines(filePath);
+
+        rowCount = lines.Length;
+        colCount = lines[0].Length;
+
+        char[,] grid = new char[rowCount, colCount];
+
+        for(int i = 0; i < rowCount; i++) {
+            for(int j = 0; j < colCount; j++) {
+                grid[i,j] = lines[i][j];
+            }
         }
-        
+
+        return grid;
     }
 
     public static void GetRulesAndPages(string filePath, ref List<Vector2I> rules, ref List<List<int>> pages) {
