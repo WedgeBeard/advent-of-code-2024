@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using utils;
 using System.Collections.Generic;
 using System.IO;
 
@@ -13,38 +14,77 @@ public class Day06A
 		int maxCols = 0;
 		char[,] grid = utils.FileReader.To2dCharArray(filePath, ref maxRows, ref maxCols);
 
-		List<Vector2> directions = new List<Vector2>{
-			new Vector2 (0, -1),
-			new Vector2 (0, 1),
-			new Vector2 (1, 0),
-			new Vector2 (-1, 0)
+		List<Pair> direction = new List<Pair> {
+			new Pair (-1, 0),	// up
+			new Pair (0, 1),	// right
+			new Pair (1, 0),	// down
+			new Pair (0, -1)	// left
 		};
-		int directionIndex = 0;
+		
+		int dirIndex = 0;
 
-		Vector2 currPos = GetStartingPosition(grid, maxRows, maxCols);
+		Pair currPos = GetStartingPosition(grid, maxRows, maxCols);
+		grid[currPos.row, currPos.col] = 'X';
+
 		bool outOfBounds = false;
 		while (!outOfBounds) {
-			// Vector2 nextPos = new Vector2 (currPos[0] + directions[directionIndex][0], currPos[1] + directions[directionIndex][1]);
-			int nextRow = currPos[0] + directions[directionIndex][0];
-			int nextRow = currPos[1] + directions[directionIndex][1];
-			// if (grid[nextPos[0],nextPos[1]]) {
-
-			// }
+			int nextRow = currPos.row + direction[dirIndex].row;
+			int nextCol = currPos.col + direction[dirIndex].col;
+			Pair nextPos = new Pair(nextRow, nextCol);
+			// GD.Print($"Looking at {nextPos.row},{nextPos.col}");
+			if (nextPos.row >= maxRows ||
+					nextPos.row < 0 ||
+					nextPos.col >= maxCols ||
+					nextPos.col < 0) {
+				// GD.Print("LEAVING AREA");
+				outOfBounds = true;
+			}
+			else if (grid[nextPos.row,nextPos.col] == '#') {
+				dirIndex = (dirIndex > direction.Count - 2) ? 0 : dirIndex + 1;
+				// GD.Print($"TURN @ {currPos.row}, {currPos.col}");
+			}
+			else if (grid[nextPos.row,nextPos.col] == '.' || 
+			grid[nextPos.row,nextPos.col] == 'X') {
+				currPos.row = nextPos.row;
+				currPos.col = nextPos.col;
+				grid[currPos.row, currPos.col] = 'X';
+				// GD.Print($"Leaving X @ {currPos.row},{currPos.col}");
+			}
 		}
 		
-		GD.Print($"Day 06 part 1: ");
+		// print grid
+		string finishedGrid = "";
+		for (int i = 0; i < maxRows; i++) {
+			for (int j = 0; j <maxCols; j++) {
+				finishedGrid += grid[i, j];
+			}
+			GD.Print(finishedGrid);
+			finishedGrid = "";
+		}
+
+		// total grid
+		int total = 0;
+		for (int i = 0; i < maxRows; i++) {
+			for (int j = 0; j <maxCols; j++) {
+				if (grid[i, j] == 'X') {
+					total++;
+				}
+			}
+		}
+
+		GD.Print($"Day 06 part 1: {total}");
 	}
 
-    private Vector2 GetStartingPosition(char[,] grid, int maxRows, int maxCols)
+    private Pair GetStartingPosition(char[,] grid, int maxRows, int maxCols)
     {
         for (int i = 0; i < maxRows; i++) {
 			for (int j = 0; j < maxCols; j++) {
 				if (grid[i,j] == '^') {
-					return new Vector2(i, j);
+					return new Pair(i, j);
 				}
 			}
 		}
-		return Vector2.Zero;
+		return new Pair(-1, -1);;
     }
 
 }
